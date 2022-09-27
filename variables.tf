@@ -2,7 +2,7 @@
 
 variable "aws_region" {
   description = "The AWS region things are created in"
-  default     = "us-west-2"
+  default     = "us-east-1"
 }
 
 variable "ecs_task_execution_role_name" {
@@ -17,7 +17,7 @@ variable "az_count" {
 
 variable "app_image" {
   description = "Docker image to run in the ECS cluster"
-  default     = "bradfordhamilton/crystal_blockchain:latest"
+  default     = "snipe/snipe-it:v5.1.7"
 }
 
 variable "app_port" {
@@ -35,12 +35,12 @@ variable "health_check_path" {
 }
 
 variable "fargate_cpu" {
-  description = "Fargate instance CPU units to provision (1 vCPU = 1024 CPU units)"
-  default     = "1024"
+  description = "Fargate instance CPU units to provision
+  default     = "512"
 }
 
 variable "fargate_memory" {
   description = "Fargate instance memory to provision (in MiB)"
-  default     = "2048"
+  default     = "1024"
 }
 

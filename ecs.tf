@@ -1,11 +1,11 @@
 # ecs.tf
 
 resource "aws_ecs_cluster" "main" {
-  name = "cb-cluster"
+  name = "snipe-cluster"
 }
 
 data "template_file" "cb_app" {
-  template = file("./templates/ecs/cb_app.json.tpl")
+  template = file("templates/ecs/cb_app.json.tpl")
 
   vars = {
     app_image      = var.app_image
@@ -17,7 +17,7 @@ data "template_file" "cb_app" {
 }
 
 resource "aws_ecs_task_definition" "app" {
-  family                   = "cb-app-task"
+  family                   = "snipe-app-task"
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
@@ -27,7 +27,7 @@ resource "aws_ecs_task_definition" "app" {
 }
 
 resource "aws_ecs_service" "main" {
-  name            = "cb-service"
+  name            = "snipe-service"
   cluster         = aws_ecs_cluster.main.id
   task_definition = aws_ecs_task_definition.app.arn
   desired_count   = var.app_count
