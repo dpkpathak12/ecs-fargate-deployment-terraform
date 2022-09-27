@@ -35,7 +35,7 @@ variable "health_check_path" {
 }
 
 variable "fargate_cpu" {
-  description = "Fargate instance CPU units to provision
+  description = "Fargate instance CPU units to provision"
   default     = "512"
 }
 
@@ -44,3 +44,54 @@ variable "fargate_memory" {
   default     = "1024"
 }
 
+#########RDS###############
+
+variable "project_name" {
+  default = "rds-mysql-public"
+}
+
+variable "mysql_identifier" {
+  default = "snipe"
+}
+
+variable "mysql_username" {
+  description = "Database administrator username"
+  type        = string
+  sensitive   = true
+  default     = "admin"
+
+}
+
+variable "mysql_password" {
+  description = "Database administrator password"
+  type        = string
+  sensitive   = true
+  default     = "test123456789"
+}
+
+variable "my_env_variables"{
+
+  # Mysql Parameters
+default = [
+        {
+          "name": "PORT",
+          "value": "80"
+        },
+        {
+          "name": "MYSQL_PORT_3306_TCP_ADDR",
+          "value": ""
+        },
+        {
+          "name":  "MYSQL_DATABASE",
+          "value": "snipe_it"
+        },
+        {
+          "name":  "MYSQL_USER",
+          "value": "admin"
+        },
+        {
+          "name":  "MYSQL_PASSWORD"
+          "value": ""
+        }
+      ]
+}

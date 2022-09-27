@@ -1,6 +1,6 @@
 [
   {
-    "name": "cb-app",
+    "name": "snip-app",
     "image": "${app_image}",
     "cpu": ${fargate_cpu},
     "memory": ${fargate_memory},
@@ -11,6 +11,7 @@
           "awslogs-group": "/ecs/cb-app",
           "awslogs-region": "${aws_region}",
           "awslogs-stream-prefix": "ecs"
+          
         }
     },
     "portMappings": [

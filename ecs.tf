@@ -13,6 +13,7 @@ data "template_file" "cb_app" {
     fargate_cpu    = var.fargate_cpu
     fargate_memory = var.fargate_memory
     aws_region     = var.aws_region
+
   }
 }
 
@@ -23,6 +24,7 @@ resource "aws_ecs_task_definition" "app" {
   requires_compatibilities = ["FARGATE"]
   cpu                      = var.fargate_cpu
   memory                   = var.fargate_memory
+  //env_vars      = "[${join(",",  data.template_file.cb_app.*.rendered)}]"
   container_definitions    = data.template_file.cb_app.rendered
 }
 
@@ -41,7 +43,7 @@ resource "aws_ecs_service" "main" {
 
   load_balancer {
     target_group_arn = aws_alb_target_group.app.id
-    container_name   = "cb-app"
+    container_name   = "snip-app"
     container_port   = var.app_port
   }
 
