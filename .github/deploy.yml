@@ -26,21 +26,6 @@ jobs:
         uses: actions/checkout@v2
         if: github.event_name == 'push'
 
-      - name: Set up Docker Buildx
-        id: buildx
-        if: github.event_name == 'push'
-        uses: docker/setup-buildx-action@master
-        with:
-          install: true
-
-      - name: Cache Docker layers
-        uses: actions/cache@v2
-        if: github.event_name == 'push'
-        with:
-            path: /tmp/.buildx-cache
-            key: ${{ runner.os }}-multi-buildx-${{ github.sha }}
-            restore-keys: |
-              ${{ runner.os }}-multi-buildx
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -63,33 +48,32 @@ jobs:
           ECR_REPOSITORY: ${{secrets.ECR_REPOSITORY}}
           IMAGE_TAG: snip_service-${{ github.sha }}
         run: |
-            docker pull snipe/snipe-it
-            docker image tag snipe/snipe-it $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+            docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
             docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
             echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
-      - name: Download task definition
-        if: github.event_name == 'push'
-        env:
-          TASK_DEFINATION: ${{ secrets.SNIPE_TASK_DEFINATION }}
+      # - name: Download task definition
+      #   if: github.event_name == 'push'
+      #   env:
+      #     TASK_DEFINATION: ${{ secrets.SNIPE_TASK_DEFINATION }}
         
-        run: |
-          aws ecs describe-task-definition --task-definition $TASK_DEFINATION --query taskDefinition > task-definition.json
+      #   run: |
+      #     aws ecs describe-task-definition --task-definition $TASK_DEFINATION --query taskDefinition > task-definition.json
       
-      - name: Render Amazon ECS task definition
-        id: task-def
-        uses: aws-actions/amazon-ecs-render-task-definition@v1
-        if: github.event_name == 'push'
-        with:
-          task-definition: task-definition.json #1
-          container-name: snip-app #2
-          image: ${{ steps.prep.outputs.image }}
+      # - name: Render Amazon ECS task definition
+      #   id: task-def
+      #   uses: aws-actions/amazon-ecs-render-task-definition@v1
+      #   if: github.event_name == 'push'
+      #   with:
+      #     task-definition: task-definition.json #1
+      #     container-name: snip-app #2
+      #     image: ${{ steps.prep.outputs.image }}
     
-      - name: Deploy to Amazon ECS service
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-        if: github.event_name == 'push'
-        with:
-          task-definition: ${{ steps.task-def.outputs.task-definition }}
-          service: ${{ secrets.SNIP_SERVICE }}
-          cluster: ${{ secrets.CLUSTER_NAME }}
-          wait-for-service-stability: true
+      # - name: Deploy to Amazon ECS service
+      #   uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      #   if: github.event_name == 'push'
+      #   with:
+      #     task-definition: ${{ steps.task-def.outputs.task-definition }}
+      #     service: ${{ secrets.SNIP_SERVICE }}
+      #     cluster: ${{ secrets.CLUSTER_NAME }}
+      #     wait-for-service-stability: true

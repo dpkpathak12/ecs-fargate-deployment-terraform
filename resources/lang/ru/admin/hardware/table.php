@@ -1,0 +1,30 @@
+<?php
+
+return [
+
+    'asset_tag'   	=> 'Тег',
+    'asset_model'       => 'Модель',
+    'book_value'  	=> 'Current Value',
+    'change' 		=> 'Отвязан/Привязан',
+    'checkout_date' => 'Дата привязки',
+    'checkoutto' 	=> 'Привязан',
+    'current_value' => 'Current Value',
+    'diff' 			=> 'Разн',
+    'dl_csv' 		=> 'Загрузить CSV',
+    'eol' 			=> 'Истек',
+    'id'      		=> 'ID',
+    'location' 		=> 'Расположение',
+    'purchase_cost'	=> 'Стоимость',
+    'purchase_date'	=> 'Куплен',
+    'serial'   		=> 'Серийный номер',
+    'status'   		=> 'Статус',
+    'title'      	=> 'Актив ',
+    'image'		    => 'Изображение устройства',
+    'days_without_acceptance' => 'Дней без принятия',
+    'monthly_depreciation' => 'Ежемесячная амортизация',
+    'assigned_to'    => 'Assigned To',
+    'requesting_user' => 'Requesting User',
+    'requested_date' => 'Requested Date',
+    'changed'       => 'Changed',
+    'icon' => 'Icon',
+];
